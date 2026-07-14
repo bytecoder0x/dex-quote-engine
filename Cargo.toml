@@ -1,0 +1,27 @@
+[package]
+name = "dex_quote_engine"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+alloy-primitives = "1.6.0"
+thiserror = "2.0.18"
+
+# Live parity testing only (behind the `live` feature): RPC client + async runtime + .env loader.
+alloy = { version = "1.0", features = ["full"], optional = true }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"], optional = true }
+dotenvy = { version = "0.15", optional = true }
+
+[features]
+# Enables `tests/live_quoter.rs` (compares the engine to the on-chain Uniswap QuoterV2).
+live = ["dep:alloy", "dep:tokio", "dep:dotenvy"]
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[dev-dependencies]
+proptest = "1.11.0"
